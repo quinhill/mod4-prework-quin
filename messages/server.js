@@ -3,8 +3,14 @@ const url = require('url');
 const server = http.createServer();
 
 server.listen(3000, () => {
-  console.log('The HTTP server is listening at port 3000');
+  console.log('The HTTP server is listening at Port 3000.');
 });
+
+let messages = [
+  { 'id': 1, 'user': 'brittany storoz', 'message': 'hi there!' },
+  { 'id': 2, 'user': 'bob loblaw', 'message': 'check out my law blog' },
+  { 'id': 3, 'user': 'lorem ipsum', 'message': 'dolor set amet' }
+];
 
 server.on('request', (request, response) => {
   if (request.method === 'GET') {
@@ -22,18 +28,28 @@ server.on('request', (request, response) => {
       addMessage(newMessage, response);
     });
   }
-});
 
-const getAllMessages = () => {
-  return messages;
-}
+    const addMessage = async (newMessage, response) => {
+      const addMessageResponse = await fetch('http://localhost:3000/', {
+        method: 'POST',
+        body: JSON.stringify({
+          newMessage
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const addMessageData = await addMessageResponse.json();
+      return addMessageData
+  }
 
-const addMessage = (newMessage, response) => {
-  return {...newMessage, response};
-}
-
-let messages = [
-  { 'id': 1, 'user': 'brittany storoz', 'message': 'hi there!' },
-  { 'id': 2, 'user': 'bob loblaw', 'message': 'check out my law blog' },
-  { 'id': 3, 'user': 'lorem ipsum', 'message': 'dolor set amet' }
-];
+    const getAllMessages = async (response) => {
+      if (resposne.ok === true){
+        const messageResponse = await fetch('http://localhost:3000/', {
+          method: 'GET'
+        });
+        const messageData = await messageResponse.json()
+        return messageData
+      }
+  }
+})
